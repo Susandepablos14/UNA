@@ -1,4 +1,4 @@
-//Ejercicio 1
+//Ejercicio 1 Cuadrado Mágico
 #include <iostream>
 using namespace std;
 

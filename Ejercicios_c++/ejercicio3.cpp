@@ -1,4 +1,4 @@
-//Ejercicio 3
+//Ejercicio 3 Colas
 #include <iostream>
 #include <queue>
 using namespace std;

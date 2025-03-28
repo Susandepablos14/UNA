@@ -1,4 +1,4 @@
-//Ejercicio 2
+//Ejercicio 2 Listas
 #include <iostream>
 using namespace std;
 
