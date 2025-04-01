@@ -1,5 +1,6 @@
 //Ejercicio 2 Listas
 #include <iostream>
+#include <limits>  // Necesario para numeric_limits y manejo de buffers
 using namespace std;
 
 int main() {
@@ -7,19 +8,78 @@ int main() {
     int n1, n2;
 
     // Ingresar la primera lista
-    cout << "Cuantos elementos tiene la lista 1? ";
-    cin >> n1;
-    for (int i = 0; i < n1; i++) {
-        cout << "Ingrese el valor " << i + 1 << ": ";
-        cin >> lista1[i];
+    while (true) {  // Bucle infinito hasta obtener entrada válida
+        cout << "Cuantos elementos tiene la lista 1? ";
+        
+        // Validación 1: Verificar si la entrada es numérica
+        if (!(cin >> n1)) {
+            cout << "Error: Debe ingresar un valor numerico.\n";
+            cin.clear();  // Limpiar flags de error
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');  // Limpiar buffer
+            continue;  // Volver a solicitar el dato
+        }
+        
+        // Validación 2: Verificar que no exceda el límite de 100
+        if (n1 > 100) {
+            cout << "Error: El valor debe ser <= 100.\n";
+            continue;
+        }
+        
+        // Validación 3: Verificar que no sea negativo
+        if (n1 < 0) {
+            cout << "Error: El valor no puede ser negativo.\n";
+            continue;
+        }
+        
+        break;  // Si pasa todas las validaciones, salir del bucle
     }
 
-    // Ingresar la segunda lista
-    cout << "Cuantos elementos tiene la lista 2? ";
-    cin >> n2;
+    // Ingreso de valores para lista1
+    for (int i = 0; i < n1; i++) {
+        while (true) {  // Bucle para cada valor hasta que sea válido
+            cout << "Ingrese el valor " << i + 1 << ": ";
+            // Validación 1: Entrada numérica
+            if (!(cin >> lista1[i])) {
+                cout << "Error: Debe ingresar un valor numerico.\n";
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                continue;
+            }     
+            break;  // Valor aceptado
+        }
+    }
+
+    // Ingresar la segunda lista (con validación idéntica a lista1)
+    while (true) {
+        cout << "Cuantos elementos tiene la lista 2? ";
+        if (!(cin >> n2)) {
+            cout << "Error: Debe ingresar un valor numerico.\n";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            continue;
+        }
+        if (n2 > 100) {
+            cout << "Error: El valor debe ser <= 100.\n";
+            continue;
+        }
+        if (n2 < 0) {
+            cout << "Error: El valor no puede ser negativo.\n";
+            continue;
+        }
+        break;
+    }
+
     for (int i = 0; i < n2; i++) {
-        cout << "Ingrese el valor " << i + 1 << ": ";
-        cin >> lista2[i];
+        while (true) {
+            cout << "Ingrese el valor " << i + 1 << ": ";
+            if (!(cin >> lista2[i])) {
+                cout << "Error: Debe ingresar un valor numerico.\n";
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                continue;
+            }
+            break;
+        }
     }
 
     // Mostrar las listas originales

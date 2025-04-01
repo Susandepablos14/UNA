@@ -1,4 +1,3 @@
-//Ejercicio 1 Cuadrado Mágico
 #include <iostream>
 using namespace std;
 
@@ -6,14 +5,20 @@ int main() {
     int n;
     int matriz[9][9] = {0}; // Inicializar la matriz con ceros
 
-    cout << "Ingrese la dimension del cuadrado magico (debe ser un numero impar entre 1 y 9): ";
-    cin >> n;
+    do {
+        cout << "Ingrese la dimension del cuadrado magico (debe ser un numero impar entre 1 y 9, o 0 para salir): ";
+        cin >> n;
 
-    // Validar que la dimensión sea un número impar entre 1 y 9
-    if (n < 1 || n > 9 || n % 2 == 0) {
-        cout << "Error: La dimension debe ser un numero impar entre 1 y 9." << endl;
-        return 1;
-    }
+        // Si el usuario ingresa 0, salir del programa
+        if (n == 0) {
+            return 0; // Termina el programa sin mostrar nada más
+        }
+
+        // Validar que la dimensión sea un número impar entre 1 y 9
+        if (n < 1 || n > 9 || n % 2 == 0) {
+            cout << "Error: La dimension debe ser un numero impar entre 1 y 9." << endl;
+        }
+    } while (n < 1 || n > 9 || n % 2 == 0); // Repetir hasta que el número sea válido o 0
 
     // Iniciar en la primera fila, columna central
     int fila = 0, columna = n / 2;
