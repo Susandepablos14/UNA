@@ -1,3 +1,4 @@
+// Ejercicio 2 Cuadrado Mágico
 #include <iostream>
 using namespace std;
 
