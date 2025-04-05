@@ -1,6 +1,7 @@
 // Ejercicio 2 Cuadrado Mágico
 #include <iostream>
 using namespace std;
+#include <limits> // Para numeric_limits
 
 int main() {
     int n;
@@ -9,6 +10,14 @@ int main() {
     do {
         cout << "Ingrese la dimension del cuadrado magico (debe ser un numero impar entre 1 y 9, o 0 para salir): ";
         cin >> n;
+        
+        // Validar que la entrada es un número
+        if (cin.fail()) {
+            cout << "Error: Debe ingresar un número válido." << endl;
+            cin.clear(); // Limpiar el estado de error
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Descartar entrada incorrecta
+            continue; // Volver al inicio del bucle
+        }
 
         // Si el usuario ingresa 0, salir del programa
         if (n == 0) {

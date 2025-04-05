@@ -10,9 +10,10 @@ int main() {
     // Ingresar la primera lista
     while (true) {  // Bucle infinito hasta obtener entrada válida
         cout << "Cuantos elementos tiene la lista 1? ";
+        cin >> n1;     
         
         // Validación 1: Verificar si la entrada es numérica
-        if (!(cin >> n1)) {
+        if (cin.fail()) {
             cout << "Error: Debe ingresar un valor numerico.\n";
             cin.clear();  // Limpiar flags de error
             cin.ignore(numeric_limits<streamsize>::max(), '\n');  // Limpiar buffer
