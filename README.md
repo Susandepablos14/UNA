@@ -93,7 +93,7 @@ Este programa determina el grado de un nodo en un árbol binario de búsqueda pr
        /  \
      11    23
     / \   / \
-   7 15 20 25
+   7  15 20  25
      /
     13
 ~~~
