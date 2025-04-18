@@ -1,5 +1,5 @@
 # Documentación de los Programas en C++
-### Este repositorio contiene cuatro programas en C++ que realizan diferentes operaciones. A continuación se describe el propósito y funcionamiento de cada uno.
+### Este repositorio contiene siete programas en C++ que realizan diferentes operaciones. A continuación se describe el propósito y funcionamiento de cada uno.
 
 ## 1. Cuadrado Mágico
 #### Archivo: ejercicio1.cpp
@@ -112,6 +112,54 @@ Este programa determina el grado de un nodo en un árbol binario de búsqueda pr
 
 ### Uso:
 Ejecutar el programa e ingresar el valor del nodo cuyo grado se desea conocer.
+
+## 5. 
+#### Archivo: ejercicio5.cpp
+
+## 6. 
+#### Archivo: ejercicio6.cpp
+
+## 7. Búsqueda Binaria en Lista de Números Reales
+#### Archivo: ejercicio7.cpp
+
+### Descripción:
+Este programa genera una lista de 999 números reales aleatorios en el rango [0.00, 2000.00] y permite buscar valores mediante el algoritmo de búsqueda binaria.
+
+### Funcionamiento:
+1. Generación de Datos:
+
+    -   Crea una lista de 999 números con exactamente 2 decimales.
+
+    -   Ordena la lista ascendentemente (requisito para la búsqueda binaria).
+
+    -   Muestra los primeros 100 números para verificación.
+
+2. Búsqueda Binaria:
+
+    -   Solicita un número al usuario (ej: 150.75).
+
+    -   Valida que:
+
+        -   Sea un valor numérico.
+
+        -   Tenga exactamente 2 decimales.
+
+        -   Esté en el rango [0.00, 2000.00].
+
+    -   Busca el número en la lista ordenada, dividiendo repetidamente el espacio de búsqueda a la mitad.
+
+3. Resultados:
+
+    -   Si encuentra el número: muestra su posición en la lista ordenada.
+
+    -   Si no existe: informa que no está presente.
+
+### Validaciones:
+- Entradas no numéricas: Rechaza letras o símbolos (ej: abc → "Error: Debe ingresar un valor numérico válido").
+
+- Decimales incorrectos: Asegura exactamente 2 decimales (ej: 123.456 → "Error: Debe tener 2 decimales").
+
+- Rango: Bloquea números negativos o mayores a 2000.00.
 
 ## Requisitos
 - Compilador de C++ (g++, clang, etc.)
