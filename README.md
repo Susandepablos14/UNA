@@ -116,8 +116,43 @@ Ejecutar el programa e ingresar el valor del nodo cuyo grado se desea conocer.
 ## 5. 
 #### Archivo: ejercicio5.cpp
 
-## 6. 
+## 6. Ordenación por Selección de Lista de Números Enteros
 #### Archivo: ejercicio6.cpp
+
+### Descripción:
+Este programa implementa el algoritmo de ordenación por selección para ordenar una lista de números enteros ingresados por el usuario en orden ascendente, incluyendo validaciones robustas para las entradas.
+
+### Funcionamiento:
+1. Entrada de Datos:
+
+    -   Solicita al usuario la cantidad de números a ordenar.
+
+    -   Valida que la cantidad sea un entero positivo.
+
+    -   Pide cada número individualmente validando que sean enteros válidos.
+
+2. Algoritmo de Ordenación por Selección:
+
+    -   Recorre la lista para encontrar el elemento más pequeño.
+
+    -   Intercambia este elemento con la primera posición no ordenada.
+
+    -   Repite el proceso para el resto de la lista no ordenada.
+
+    -   Completa la ordenación en O(n²) comparaciones
+
+3. Salida de Resultados:
+
+    -   Muestra el vector original ingresado por el usuario.
+
+    -   Presenta el vector ordenado ascendentemente.
+
+    -   El formato de salida es claro con corchetes y comas separando los valores.
+
+### Validaciones:
+- Validación de Entrada: Rechaza entradas no numéricas (ej: "abc" → "Error: Debe ingresar un numero entero valido").
+
+- Validación de Cantidad: Asegura que la cantidad de números sea mayor que cero (Mensaje claro: "Error: La cantidad debe ser mayor que 0.").
 
 ## 7. Búsqueda Binaria en Lista de Números Reales
 #### Archivo: ejercicio7.cpp
