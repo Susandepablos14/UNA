@@ -116,6 +116,41 @@ Ejecutar el programa e ingresar el valor del nodo cuyo grado se desea conocer.
 ## 5. 
 #### Archivo: EjerciciosCplusplus/floyd_warshall_red_hosting.cpp
 
+### Descripción:
+Este programa implementa el algoritmo Floyd-Warshall para calcular las distancias mínimas y número de saltos entre nodos en una red de hosting, mostrando además el promedio de enlaces desde el nodo central.
+
+
+### Funcionamiento:
+1. Inicialización del Grafo:
+
+    -   Crea una matriz de adyacencia con los costos entre nodos (S, 1, 2, 3)
+
+    -   Inicializa la matriz de saltos con 1 para conexiones directas e INF para no conexiones
+
+2. Algoritmo Floyd-Warshall:
+
+    -   Compara todas las posibles rutas entre cada par de nodos
+
+    -   Actualiza las matrices de distancias y saltos cuando encuentra caminos más cortos
+
+    -   Considera tanto la distancia total como el número de saltos
+
+    -   Completa el procesamiento en O(n³) operaciones
+
+3. Cálculo de Métricas:
+
+    -   Calcula el número medio de enlaces desde el nodo central S
+
+    -   Considera solo nodos alcanzables en el cálculo del promedio
+
+4. Visualización de Resultados:
+
+    -   Muestra la matriz de costos original con formato tabular
+
+    -   Presenta las matrices resultantes de distancias mínimas y saltos
+
+    -   Incluye el promedio de saltos desde el nodo S con 2 decimales de precisión
+
 ## 6. Ordenación por Selección de Lista de Números Enteros
 #### Archivo: EjerciciosCplusplus/ordenamiento_seleccion.cpp
 
