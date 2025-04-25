@@ -1,8 +1,6 @@
 #include <iostream>      // Para operaciones de entrada/salida estándar
 #include <cstdlib>       // Para rand() y srand() (generación de números aleatorios)
 #include <ctime>         // Para time() (obtención de semilla aleatoria)
-#include <vector>        // Para usar la estructura de datos vector
-#include <algorithm>     // Para sort() (ordenamiento de vectores)
 #include <limits>        // Para numeric_limits (manejo de límites de buffers)
 #include <sstream>       // Para stringstream (manejo de conversión de strings)
 #include <cmath>         // Para funciones matemáticas (round, fabs)
@@ -10,33 +8,45 @@
 
 using namespace std;
 
+const int TOTAL_NUMEROS = 999; // Tamaño fijo del arreglo
+
 // Función que genera un vector de números reales aleatorios con exactamente 2 decimales
-vector<double> generarNumeros(int cantidad) {
-    vector<double> numeros;  // Vector para almacenar los números generados
-    srand(time(0)); // Inicializa semilla aleatoria basada en el tiempo actual
-
+void generarNumeros(double arreglo[], int cantidad) {
+    srand(time(0));
     for (int i = 0; i < cantidad; ++i) {
-        // Genera número entre 0 y 2000 con 2 decimales exactos:
-        // 1. Genera número entre 0 y 2000
-        // 2. Multiplica por 100 para trabajar con centésimas
-        // 3. Redondea al entero más cercano
-        // 4. Divide por 100 para obtener 2 decimales exactos
-        double numero = round((double)rand() / RAND_MAX * 2000.0 * 100) / 100.0;
-        numeros.push_back(numero);
+        arreglo[i] = round((double)rand() / RAND_MAX * 2000.0 * 100) / 100.0;
     }
-
-    return numeros;
 }
 
-// Función que imprime los primeros 100 números del vector
-void imprimirNumeros(const vector<double>& numeros) {
-    cout << "Primeros 100 numeros (ordenados):" << endl;
 
-    // Itera sobre los primeros 100 elementos del vector
-    for (int i = 0; i < 100; ++i) {
-        cout << numeros[i] << ", "; // Imprime cada número seguido de espacio
+// Función para intercambiar dos valores double
+void intercambiar(double &a, double &b) {
+    double tmp = b;
+    b = a;
+    a = tmp;
+}
+
+// Función para ordenar el vector usando Bubble Sort
+void ordenarArreglo(double arreglo[], int tamano) {
+    for (int i = 0; i < tamano - 1; i++) {
+        for (int j = 0; j < tamano - 1 - i; j++) {
+            if (arreglo[j] > arreglo[j + 1]) {
+                intercambiar(arreglo[j], arreglo[j + 1]);
+            }
+        }
     }
-    cout << "\n...\n" << endl;  // Indicador de que hay más números no mostrados
+}
+
+
+// Función que imprime los primeros 100 números del vector
+void imprimirNumeros(const double arreglo[], int tamano) {
+    int mostrar = min(100, tamano);
+    cout << "Primeros " << mostrar << " numeros (ordenados):" << endl;
+    
+    for (int i = 0; i < mostrar; ++i) {
+        cout << fixed << setprecision(2) << arreglo[i] << ", ";
+    }
+    cout << "\n...\n" << endl;
 }
 
 // Función para validar y obtener un número con exactamente 2 decimales dentro del rango [0.00, 2000.00]
@@ -72,9 +82,9 @@ double obtenerNumeroValidado() {
 }
 
 // Función de búsqueda binaria en un vector ordenado
-int busquedaBinaria(const vector<double>& arr, double x) {
-    int izquierda = 0; // Límite izquierdo inicial
-    int derecha = arr.size() - 1; // Límite derecho inicial
+int busquedaBinaria(const double arr[], int tamano, double x) {
+    int izquierda = 0;
+    int derecha = tamano - 1;  // Ahora recibimos el tamaño como parámetro
 
     while (izquierda <= derecha) { // Mientras haya elementos por buscar
         int medio = izquierda + (derecha - izquierda) / 2; // Calcula punto medio
@@ -95,22 +105,22 @@ int busquedaBinaria(const vector<double>& arr, double x) {
 
 // Función principal del programa
 int main() {
-    const int TOTAL_NUMEROS = 999; // Cantidad de números a generar
+    double listaNumeros[TOTAL_NUMEROS]; 
 
     // 1. Generar números aleatorios
-    vector<double> listaNumeros = generarNumeros(TOTAL_NUMEROS);
+    generarNumeros(listaNumeros, TOTAL_NUMEROS);
 
-    // 2. Ordenar los números (requisito para búsqueda binaria)
-    sort(listaNumeros.begin(), listaNumeros.end());
+    // 2. Ordenar los números con Bubble Sort
+    ordenarArreglo(listaNumeros, TOTAL_NUMEROS);
 
     // 3. Mostrar muestra de los números (opcional, para verificación)
-    imprimirNumeros(listaNumeros);
+    imprimirNumeros(listaNumeros, TOTAL_NUMEROS);
 
     // 4. Obtener número a buscar del usuario con validación robusta
     double x = obtenerNumeroValidado();
     
     // 5. Realizar búsqueda binaria
-    int posicion = busquedaBinaria(listaNumeros, x);
+    int posicion = busquedaBinaria(listaNumeros, TOTAL_NUMEROS, x);
 
     // 6. Presentación de resultados
     if (posicion != -1) {

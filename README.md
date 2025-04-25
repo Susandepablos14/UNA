@@ -2,7 +2,7 @@
 ### Este repositorio contiene siete programas en C++ que realizan diferentes operaciones. A continuación se describe el propósito y funcionamiento de cada uno.
 
 ## 1. Cuadrado Mágico
-#### Archivo: ejercicio1.cpp
+#### Archivo: EjerciciosCplusplus/cubo_magico.cpp
 
 ### Descripción:
 Este programa genera un cuadrado mágico de dimensiones impares (hasta 9x9). Un cuadrado mágico es una matriz donde la suma de los números en cada fila, columna y diagonal principal es la misma.
@@ -24,7 +24,7 @@ Este programa genera un cuadrado mágico de dimensiones impares (hasta 9x9). Un 
 Ejecutar el programa y seguir las instrucciones para ingresar la dimensión deseada.
 
 ## 2. Operaciones con Listas
-#### Archivo: ejercicio2.cpp
+#### Archivo: EjerciciosCplusplus/listas_enlazadas.cpp
 
 ### Descripción:
 Este programa realiza operaciones con dos listas de números enteros:
@@ -55,7 +55,7 @@ Este programa realiza operaciones con dos listas de números enteros:
 Ejecutar el programa y seguir las instrucciones para ingresar los elementos de las listas.
 
 ## 3. Manejo de Colas
-#### Archivo: ejercicio3.cpp
+#### Archivo: EjerciciosCplusplus/cola_caracteres.cpp
 
 ### Descripción:
 Este programa implementa una cola de caracteres con las siguientes operaciones:
@@ -82,7 +82,7 @@ Este programa implementa una cola de caracteres con las siguientes operaciones:
 Ejecutar el programa y seleccionar las opciones del menú.
 
 ## 4. Árbol Binario de Búsqueda
-#### Archivo: ejercicio4.cpp
+#### Archivo: EjerciciosCplusplus/arbol_grado_nodo.cpp
 
 ### Descripción:
 Este programa determina el grado de un nodo en un árbol binario de búsqueda predefinido. El grado de un nodo es el número de hijos que tiene (0, 1 o 2).
@@ -114,10 +114,10 @@ Este programa determina el grado de un nodo en un árbol binario de búsqueda pr
 Ejecutar el programa e ingresar el valor del nodo cuyo grado se desea conocer.
 
 ## 5. 
-#### Archivo: ejercicio5.cpp
+#### Archivo: EjerciciosCplusplus/floyd_warshall_red_hosting.cpp
 
 ## 6. Ordenación por Selección de Lista de Números Enteros
-#### Archivo: ejercicio6.cpp
+#### Archivo: EjerciciosCplusplus/ordenamiento_seleccion.cpp
 
 ### Descripción:
 Este programa implementa el algoritmo de ordenación por selección para ordenar una lista de números enteros ingresados por el usuario en orden ascendente, incluyendo validaciones robustas para las entradas.
@@ -155,7 +155,7 @@ Este programa implementa el algoritmo de ordenación por selección para ordenar
 - Validación de Cantidad: Asegura que la cantidad de números sea mayor que cero (Mensaje claro: "Error: La cantidad debe ser mayor que 0.").
 
 ## 7. Búsqueda Binaria en Lista de Números Reales
-#### Archivo: ejercicio7.cpp
+#### Archivo: EjerciciosCplusplus/busqueda_binaria.cpp
 
 ### Descripción:
 Este programa genera una lista de 999 números reales aleatorios en el rango [0.00, 2000.00] y permite buscar valores mediante el algoritmo de búsqueda binaria.

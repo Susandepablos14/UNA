@@ -1,4 +1,4 @@
-// Ejercicio 2 Cuadrado Mágico
+// Ejercicio 1 Cuadrado Mágico
 #include <iostream>
 using namespace std;
 #include <limits> // Para numeric_limits
