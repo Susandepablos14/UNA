@@ -1,3 +1,4 @@
+//Ejercicio 1 Cubo Mágico
 #include <iostream>
 using namespace std;
 
