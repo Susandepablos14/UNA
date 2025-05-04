@@ -1,130 +1,178 @@
-//Ejercicio 2 Listas
+//Ejercicio 2 Listas Enlazadas
 #include <iostream>
-#include <limits>  // Necesario para numeric_limits y manejo de buffers
 using namespace std;
 
-int main() {
-    int lista1[100], lista2[100], listaIntercalada[200], listaResta[100];
-    int n1, n2;
+// Clase que representa un nodo de la lista enlazada
+class Nodo {
+public:
+    int dato;         // Valor almacenado en el nodo
+    Nodo* siguiente;  // Puntero al siguiente nodo en la lista
 
-    // Ingresar la primera lista
-    while (true) {  // Bucle infinito hasta obtener entrada válida
-        cout << "Cuantos elementos tiene la lista 1? ";
-        cin >> n1;     
+    // Constructor que inicializa el nodo con un valor
+    Nodo(int valor) : dato(valor), siguiente(NULL) {}
+};
+
+// Clase que implementa una lista enlazada simple
+class ListaEnlazada {
+private:
+    Nodo* cabeza;     // Puntero al primer nodo de la lista
+
+    // Función auxiliar para mostrar los elementos
+    void mostrar(Nodo* actual, bool primero) {
+        if (actual == NULL) {
+            cout << endl;
+            return;
+        }
+        if (!primero) {
+            cout << ", ";
+        }
+        cout << actual->dato;
+        mostrar(actual->siguiente, false);
+    }
+
+    // Función auxiliar para liberar la memoria
+    void liberar(Nodo* actual) {
+        if (actual == NULL) return;
+        Nodo* siguiente = actual->siguiente;
+        delete actual;
+        liberar(siguiente);
+    }
+
+    // Función auxiliar para insertar al final
+    void agregar(Nodo* actual, Nodo* nuevo) {
+        if (actual->siguiente == NULL) {
+            actual->siguiente = nuevo;
+            return;
+        }
+        agregar(actual->siguiente, nuevo);
+    }
+
+public:
+    // Constructor que inicializa una lista vacía
+    ListaEnlazada() : cabeza(NULL) {}
+
+    // Destructor que libera toda la memoria
+    ~ListaEnlazada() {
+        liberar(cabeza);
+    }
+
+    // Método que verifica si la lista está vacía
+    bool estaVacia() {
+        return cabeza == NULL;
+    }
+
+    // Inserta un nuevo elemento al final de la lista
+    void insertar(int valor) {
+        Nodo* nuevo = new Nodo(valor);
+        if (estaVacia()) {
+            cabeza = nuevo;
+        } else {
+            agregar(cabeza, nuevo);
+        }
+    }
+
+    // Muestra todos los elementos de la lista
+    void imprimir() {
+        mostrar(cabeza, true);
+    }
+
+    // Método estático que intercala dos listas
+    static void mezclar(Nodo* actual1, Nodo* actual2, ListaEnlazada& resultado) {
+        if (actual1 == NULL && actual2 == NULL) return;
         
-        // Validación 1: Verificar si la entrada es numérica
+        if (actual1 != NULL) {
+            resultado.insertar(actual1->dato);
+            mezclar(actual1->siguiente, actual2, resultado);
+        }
+        if (actual2 != NULL) {
+            resultado.insertar(actual2->dato);
+            mezclar(actual1, actual2->siguiente, resultado);
+        }
+    }
+
+    // Método público para intercalar listas
+    static ListaEnlazada intercalar(ListaEnlazada& lista1, ListaEnlazada& lista2) {
+        ListaEnlazada resultado;
+        mezclar(lista1.cabeza, lista2.cabeza, resultado);
+        return resultado;
+    }
+
+    // Método estático que resta dos listas
+    static void diferencia(Nodo* actual1, Nodo* actual2, ListaEnlazada& resultado) {
+        if (actual1 == NULL && actual2 == NULL) return;
+        
+        if (actual1 != NULL && actual2 != NULL) {
+            resultado.insertar(actual1->dato - actual2->dato);
+            diferencia(actual1->siguiente, actual2->siguiente, resultado);
+        }
+        else if (actual1 != NULL) {
+            resultado.insertar(actual1->dato);
+            diferencia(actual1->siguiente, actual2, resultado);
+        }
+        else {
+            resultado.insertar(-actual2->dato);
+            diferencia(actual1, actual2->siguiente, resultado);
+        }
+    }
+
+    // Método público para restar listas
+    static ListaEnlazada restar(ListaEnlazada& lista1, ListaEnlazada& lista2) {
+        ListaEnlazada resultado;
+        diferencia(lista1.cabeza, lista2.cabeza, resultado);
+        return resultado;
+    }
+};
+
+// Función para obtener un número válido del usuario
+int obtenerNumero(const string& mensaje) {
+    int valor;
+    while (true) {
+        cout << mensaje;
+        cin >> valor;
         if (cin.fail()) {
             cout << "Error: Debe ingresar un valor numerico.\n";
-            cin.clear();  // Limpiar flags de error
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');  // Limpiar buffer
-            continue;  // Volver a solicitar el dato
-        }
-        
-        // Validación 2: Verificar que no exceda el límite de 100
-        if (n1 > 100) {
-            cout << "Error: El valor debe ser <= 100.\n";
-            continue;
-        }
-        
-        // Validación 3: Verificar que no sea negativo
-        if (n1 < 0) {
-            cout << "Error: El valor no puede ser negativo.\n";
-            continue;
-        }
-        
-        break;  // Si pasa todas las validaciones, salir del bucle
-    }
-
-    // Ingreso de valores para lista1
-    for (int i = 0; i < n1; i++) {
-        while (true) {  // Bucle para cada valor hasta que sea válido
-            cout << "Ingrese el valor " << i + 1 << ": ";
-            // Validación 1: Entrada numérica
-            if (!(cin >> lista1[i])) {
-                cout << "Error: Debe ingresar un valor numerico.\n";
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                continue;
-            }     
-            break;  // Valor aceptado
-        }
-    }
-
-    // Ingresar la segunda lista (con validación idéntica a lista1)
-    while (true) {
-        cout << "Cuantos elementos tiene la lista 2? ";
-        if (!(cin >> n2)) {
-            cout << "Error: Debe ingresar un valor numerico.\n";
             cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            continue;
+            cin.ignore(10000, '\n');
+        } else {
+            cin.ignore(10000, '\n');
+            return valor;
         }
-        if (n2 > 100) {
-            cout << "Error: El valor debe ser <= 100.\n";
-            continue;
-        }
-        if (n2 < 0) {
-            cout << "Error: El valor no puede ser negativo.\n";
-            continue;
-        }
-        break;
+    }
+}
+
+// Función principal del programa
+int main() {
+    ListaEnlazada lista1, lista2;
+    int cantidad;
+
+    // Ingreso de datos para la lista 1
+    cout << "INGRESO DE DATOS PARA LA LISTA 1\n";
+    cantidad = obtenerNumero("¿Cuantos elementos tendra la lista 1? ");
+    for (int i = 0; i < cantidad; i++) {
+        lista1.insertar(obtenerNumero("Ingrese el elemento " + to_string(i+1) + ": "));
     }
 
-    for (int i = 0; i < n2; i++) {
-        while (true) {
-            cout << "Ingrese el valor " << i + 1 << ": ";
-            if (!(cin >> lista2[i])) {
-                cout << "Error: Debe ingresar un valor numerico.\n";
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                continue;
-            }
-            break;
-        }
+    // Ingreso de datos para la lista 2
+    cout << "\nINGRESO DE DATOS PARA LA LISTA 2\n";
+    cantidad = obtenerNumero("¿Cuantos elementos tendra la lista 2? ");
+    for (int i = 0; i < cantidad; i++) {
+        lista2.insertar(obtenerNumero("Ingrese el elemento " + to_string(i+1) + ": "));
     }
 
     // Mostrar las listas originales
-    cout << "Lista 1: ";
-    for (int i = 0; i < n1; i++) {
-        cout << lista1[i] << " ";
-    }
-    cout << endl;
+    cout << "\nLISTA 1: ";
+    lista1.imprimir();
+    cout << "LISTA 2: ";
+    lista2.imprimir();
 
-    cout << "Lista 2: ";
-    for (int i = 0; i < n2; i++) {
-        cout << lista2[i] << " ";
-    }
-    cout << endl;
+    // Operaciones con las listas
+    ListaEnlazada lista3 = ListaEnlazada::intercalar(lista1, lista2);
+    cout << "\nLISTA INTERCALADA: ";
+    lista3.imprimir();
 
-    // Intercalar las listas
-    int k = 0;
-    for (int i = 0; i < max(n1, n2); i++) {
-        if (i < n1) {
-            listaIntercalada[k++] = lista1[i];
-        }
-        if (i < n2) {
-            listaIntercalada[k++] = lista2[i];
-        }
-    }
-
-    cout << "Lista intercalada: ";
-    for (int i = 0; i < k; i++) {
-        cout << listaIntercalada[i] << " ";
-    }
-    cout << endl;
-
-    // Calcular la resta de las listas
-    for (int i = 0; i < max(n1, n2); i++) {
-        int valor1 = (i < n1) ? lista1[i] : 0;
-        int valor2 = (i < n2) ? lista2[i] : 0;
-        listaResta[i] = valor1 - valor2;
-    }
-
-    cout << "Lista resta: ";
-    for (int i = 0; i < max(n1, n2); i++) {
-        cout << listaResta[i] << " ";
-    }
-    cout << endl;
+    ListaEnlazada lista4 = ListaEnlazada::restar(lista1, lista2);
+    cout << "\nRESTA DE LISTAS: ";
+    lista4.imprimir();
 
     return 0;
 }

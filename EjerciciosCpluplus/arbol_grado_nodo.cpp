@@ -1,68 +1,108 @@
 //Ejercicio 4 Nodos
 #include <iostream>
 
-// Definición de la estructura del nodo
-struct Nodo {
-    int valor;
-    Nodo* izquierdo;
-    Nodo* derecho;
-    Nodo(int v) : valor(v), izquierdo(nullptr), derecho(nullptr) {}
+using namespace std;
+
+// Clase principal que representa un árbol binario de búsqueda
+class ArbolBinario {
+    private:
+        // Estructura interna para los nodos del árbol
+        struct Nodo {
+            int valor;
+            Nodo* izquierdo;
+            Nodo* derecho;
+            Nodo(int v) : valor(v), izquierdo(0), derecho(0) {}
+        };
+        
+        Nodo* raiz;
+        
+        // Inserta un nuevo valor en el árbol manteniendo la propiedad BST
+        Nodo* insertar(Nodo* nodo, int valor) {
+            if (nodo == 0) return new Nodo(valor);
+            if (valor < nodo->valor) nodo->izquierdo = insertar(nodo->izquierdo, valor);
+            else if (valor > nodo->valor) nodo->derecho = insertar(nodo->derecho, valor);
+            return nodo;
+        }
+        
+        // Busca un nodo y retorna su grado (número de hijos)
+        int buscarGrado(Nodo* nodo, int valor) {
+            if (nodo == 0) return -1;
+            if (nodo->valor == valor) {
+                int grado = 0;
+                if (nodo->izquierdo != 0) grado++;
+                if (nodo->derecho != 0) grado++;
+                return grado;
+            }
+            return valor < nodo->valor ? buscarGrado(nodo->izquierdo, valor) : buscarGrado(nodo->derecho, valor);
+        }
+        
+        // Libera toda la memoria utilizada por el árbol
+        void liberarArbol(Nodo* nodo) {
+            if (nodo != 0) {
+                liberarArbol(nodo->izquierdo);
+                liberarArbol(nodo->derecho);
+                delete nodo;
+            }
+        }
+        
+    public:
+        // Constructor inicializa el árbol vacío
+        ArbolBinario() : raiz(0) {}
+        
+        // Destructor se encarga de liberar la memoria
+        ~ArbolBinario() { liberarArbol(raiz); }
+        
+        // Método público para insertar valores
+        void insertar(int valor) { raiz = insertar(raiz, valor); }
+        
+        // Método público para obtener el grado de un nodo
+        int gradoNodo(int valor) { return buscarGrado(raiz, valor); }
 };
 
-// Función para insertar un nodo en el árbol binario de búsqueda
-Nodo* insertar(Nodo* raiz, int valor) {
-    if (raiz == nullptr) {
-        return new Nodo(valor);
-    }
-    if (valor < raiz->valor) {
-        raiz->izquierdo = insertar(raiz->izquierdo, valor);
-    } else if (valor > raiz->valor) {
-        raiz->derecho = insertar(raiz->derecho, valor);
-    }
-    return raiz;
-}
-
-// Función recursiva para buscar un nodo y determinar su grado
-int Grado(Nodo* raiz, int valor) {
-    if (raiz == nullptr) {
-        std::cout << "Nodo no encontrado." << std::endl;
-        return -1;
-    }
-    if (raiz->valor == valor) {
-        int grado = 0;
-        if (raiz->izquierdo != nullptr) grado++;
-        if (raiz->derecho != nullptr) grado++;
-        return grado;
-    }
-    if (valor < raiz->valor) {
-        return Grado(raiz->izquierdo, valor);
-    } else {
-        return Grado(raiz->derecho, valor);
+// Función para obtener un número válido del usuario
+int obtenerNumero() {
+    int valor;
+    while (true) {
+        cout << "\nIngrese el valor del nodo que desea buscar (0 para salir): ";
+        cin >> valor;
+        if (cin.fail()) {
+            cout << "Error: Debe ingresar un valor numerico.\n";
+            cin.clear();
+            cin.ignore(10000, '\n');
+        } else {
+            cin.ignore(10000, '\n');
+            return valor;
+        }
     }
 }
-
+    
+// Función principal del programa
 int main() {
-    // Construcción del árbol binario de búsqueda según la descripción
-    Nodo* raiz = nullptr;
-    raiz = insertar(raiz, 18);
-    insertar(raiz, 11);
-    insertar(raiz, 7);
-    insertar(raiz, 15);
-    insertar(raiz, 13);
-    insertar(raiz, 23);
-    insertar(raiz, 20);
-    insertar(raiz, 25);
-
-    // Solicitar al usuario el valor del nodo que desea buscar
-    int valorBuscado;
-    std::cout << "Ingrese el valor del nodo que desea buscar: ";
-    std::cin >> valorBuscado;
-
-    // Llamar a la función Grado para buscar el nodo y determinar su grado
-    int grado = Grado(raiz, valorBuscado);
-    if (grado != -1) {
-        std::cout << "El grado del nodo con valor " << valorBuscado << " es: " << grado << std::endl;
-    }
-
+    // Crear instancia del árbol
+    ArbolBinario arbol;
+    
+    // Construir el árbol con los valores dados
+    arbol.insertar(18);
+    arbol.insertar(11);
+    arbol.insertar(7);
+    arbol.insertar(15);
+    arbol.insertar(13);
+    arbol.insertar(23);
+    arbol.insertar(20);
+    arbol.insertar(25);
+    
+    int opcion;
+    do {
+        opcion = obtenerNumero();
+        
+        if(opcion != 0) {
+            // Mostrar resultado de la búsqueda
+            int grado = arbol.gradoNodo(opcion);
+            if (grado != -1) cout << "El grado del nodo es: " << grado << endl;
+            else cout << "Nodo no encontrado." << endl;
+        }
+    } while(opcion != 0);
+    
+    cout << "Programa finalizado." << endl;
     return 0;
 }
