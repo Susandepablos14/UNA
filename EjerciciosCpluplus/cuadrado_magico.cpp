@@ -1,17 +1,17 @@
-//Ejercicio 1 Cubo Mágico
+//Ejercicio 1 Cuadrado Mágico
 #include <iostream>
 using namespace std;
 
-class CuboMagico {
+class CuadradoMagico {
 private:
     int** vector; // Matriz dinámica para el cuadrado mágico
-    int n; // Dimensión del cubo
+    int n; // Dimensión del cuadrado
 
-    // Función auxiliar para llenar el cubo
+    // Función auxiliar para llenar el cuadrado
     void llenar(int num, int fila, int columna);
 
 public:
-    CuboMagico(int dimension) {
+    CuadradoMagico(int dimension) {
         n = dimension;
         vector = new int*[n];
         for (int i = 0; i < n; i++) {
@@ -23,7 +23,7 @@ public:
         }
     }
 
-    ~CuboMagico() {
+    ~CuadradoMagico() {
         // Liberar memoria
         for (int i = 0; i < n; i++) {
             delete[] vector[i];
@@ -31,11 +31,11 @@ public:
         delete[] vector;
     }
 
-    void llenarCuboMagico();
-    void visualizarCuboMagico();
+    void llenarCuadradoMagico();
+    void visualizarCuadradoMagico();
 };
 
-void CuboMagico::llenar(int num, int fila, int columna) {
+void CuadradoMagico::llenar(int num, int fila, int columna) {
     // Caso base: cuando hemos colocado todos los números
     if (num > n * n) {
         return;
@@ -56,12 +56,12 @@ void CuboMagico::llenar(int num, int fila, int columna) {
     }
 }
 
-void CuboMagico::llenarCuboMagico() {
+void CuadradoMagico::llenarCuadradoMagico() {
     // Iniciar la recursión desde el número 1 en la posición inicial
     llenar(1, 0, n / 2);
 }
 
-void CuboMagico::visualizarCuboMagico() {
+void CuadradoMagico::visualizarCuadradoMagico() {
     cout << "\nCuadrado magico de " << n << "x" << n << ":\n";
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
@@ -76,11 +76,11 @@ int main() {
     int n;
     
     while (true) {
-        cout << "Ingrese la dimension del cubo magico (impar 1-9, 0 para salir): ";
+        cout << "Ingrese la dimensión del cuadrado mágico (impar 1-9, 0 para salir): ";
         cin >> n;
         
         if (cin.fail()) {
-            cout << "Error: Ingrese un numero valido.\n\n";
+            cout << "Error: Ingrese un número valido.\n\n";
             cin.clear();
             cin.ignore(10000, '\n');
             continue;
@@ -92,17 +92,17 @@ int main() {
         }
 
         if (n < 1 || n > 9 || n % 2 == 0) {
-            cout << "Error: Dimension debe ser impar entre 1 y 9.\n\n";
+            cout << "Error: Dimensión debe ser impar entre 1 y 9.\n\n";
             continue;
         }
 
-        // Crear cubo mágico con el tamaño indicado
-        CuboMagico* cubomagico = new CuboMagico(n);
-        cubomagico->llenarCuboMagico();
-        cubomagico->visualizarCuboMagico();
+        // Crear cuadrado mágico con el tamaño indicado
+        CuadradoMagico* cuadradomagico = new CuadradoMagico(n);
+        cuadradomagico->llenarCuadradoMagico();
+        cuadradomagico->visualizarCuadradoMagico();
         
         // Liberar memoria
-        delete cubomagico;
+        delete cuadradomagico;
     }
 
     return 0;

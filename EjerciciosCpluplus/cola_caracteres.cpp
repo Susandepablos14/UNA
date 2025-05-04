@@ -22,7 +22,7 @@ class ColaDinamica {
 private:
     Nodo* frente;   // Puntero al primer elemento de la cola
     Nodo* final;    // Puntero al último elemento de la cola
-    int tamanio;    // Cantidad de elementos en la cola
+    int tamano;    // Cantidad de elementos en la cola
     
     // Método recursivo privado para mostrar elementos
     // Recibe: Nodo actual que se está procesando
@@ -42,7 +42,7 @@ public:
     ColaDinamica() {
         frente = NULL; // No hay elementos al inicio
         final = NULL;  // No hay elementos al inicio
-        tamanio = 0;   // Tamaño inicial cero
+        tamano = 0;   // Tamaño inicial cero
     }
     
     // Destructor: Libera toda la memoria de los nodos al destruir la cola
@@ -70,7 +70,7 @@ public:
         
         // El nuevo nodo siempre será el nuevo final
         final = nuevo;
-        tamanio++; // Aumentamos el tamaño de la cola
+        tamano++; // Aumentamos el tamaño de la cola
     }
     
     // Desencolar: Elimina y retorna el elemento del frente de la cola
@@ -95,7 +95,7 @@ public:
         
         // Liberamos la memoria del nodo eliminado
         delete temp;
-        tamanio--; // Disminuimos el tamaño de la cola
+        tamano--; // Disminuimos el tamaño de la cola
         
         return dato; // Retornamos el dato del nodo eliminado
     }
@@ -117,8 +117,8 @@ public:
     
     // Obtener tamaño: Retorna la cantidad de elementos en la cola
     // Retorna: El tamaño actual de la cola
-    int obtenerTamanio() {
-        return tamanio;
+    int obtenerTamano() {
+        return tamano;
     }
     
     // Mostrar elementos: Muestra todos los elementos de la cola
