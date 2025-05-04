@@ -2,7 +2,7 @@
 ### Este repositorio contiene siete programas en C++ que realizan diferentes operaciones. A continuación se describe el propósito y funcionamiento de cada uno.
 
 ## 1. Cuadrado Mágico
-#### Archivo: EjerciciosCplusplus/cubo_magico.cpp
+#### Archivo: EjerciciosCplusplus/cuadrado_magico.cpp
 
 ### Descripción:
 Este programa genera un cuadrado mágico de dimensiones impares (hasta 9x9). Un cuadrado mágico es una matriz donde la suma de los números en cada fila, columna y diagonal principal es la misma.
