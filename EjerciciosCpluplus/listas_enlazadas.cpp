@@ -80,11 +80,20 @@ public:
     static void mezclar(Nodo* actual1, Nodo* actual2, ListaEnlazada& resultado) {
         if (actual1 == NULL && actual2 == NULL) return;
         
+        // Primero insertamos de la lista1 si existe
         if (actual1 != NULL) {
             resultado.insertar(actual1->dato);
-            mezclar(actual1->siguiente, actual2, resultado);
-        }
-        if (actual2 != NULL) {
+            // Luego de la lista2 si existe
+            if (actual2 != NULL) {
+                resultado.insertar(actual2->dato);
+                // Avanzamos en ambas listas
+                mezclar(actual1->siguiente, actual2->siguiente, resultado);
+            } else {
+                // Si solo queda lista1, avanzamos solo en ella
+                mezclar(actual1->siguiente, actual2, resultado);
+            }
+        } else {
+            // Si solo queda lista2, insertamos y avanzamos
             resultado.insertar(actual2->dato);
             mezclar(actual1, actual2->siguiente, resultado);
         }
@@ -124,7 +133,7 @@ public:
 };
 
 // Función para obtener un número válido del usuario
-int obtenerNumero(const string& mensaje) {
+int obtenerNumero(const string& mensaje, bool debeSerPositivo = false) {
     int valor;
     while (true) {
         cout << mensaje;
@@ -132,6 +141,9 @@ int obtenerNumero(const string& mensaje) {
         if (cin.fail()) {
             cout << "Error: Debe ingresar un valor numerico.\n";
             cin.clear();
+            cin.ignore(10000, '\n');
+        } else if (debeSerPositivo && valor < 0) {
+            cout << "Error: El numero debe ser positivo.\n";
             cin.ignore(10000, '\n');
         } else {
             cin.ignore(10000, '\n');
@@ -147,14 +159,14 @@ int main() {
 
     // Ingreso de datos para la lista 1
     cout << "INGRESO DE DATOS PARA LA LISTA 1\n";
-    cantidad = obtenerNumero("¿Cuantos elementos tendra la lista 1? ");
+    cantidad = obtenerNumero("¿Cuantos elementos tendra la lista 1? ", true);
     for (int i = 0; i < cantidad; i++) {
         lista1.insertar(obtenerNumero("Ingrese el elemento " + to_string(i+1) + ": "));
     }
 
     // Ingreso de datos para la lista 2
     cout << "\nINGRESO DE DATOS PARA LA LISTA 2\n";
-    cantidad = obtenerNumero("¿Cuantos elementos tendra la lista 2? ");
+    cantidad = obtenerNumero("¿Cuantos elementos tendra la lista 2? ", true);
     for (int i = 0; i < cantidad; i++) {
         lista2.insertar(obtenerNumero("Ingrese el elemento " + to_string(i+1) + ": "));
     }
