@@ -126,7 +126,7 @@ public:
     void mostrarElementos() {
         // Si la cola está vacía, mostramos un mensaje
         if (estaVacia()) {
-            cout << "La cola está vacía." << endl;
+            cout << "La cola está vacía. No hay elementos para mostrar." << endl;
             return;
         }
         
