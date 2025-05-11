@@ -1,19 +1,56 @@
-#include <iostream>      // Para operaciones de entrada/salida estándar
-#include <cstdlib>       // Para rand() y srand() (generación de números aleatorios)
-#include <ctime>         // Para time() (obtención de semilla aleatoria)
-#include <sstream>       // Para stringstream (manejo de conversión de strings)
-#include <cmath>         // Para funciones matemáticas (round, fabs)
-#include <iomanip>       // Para setprecision (control de decimales en salida)
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <cmath>
 
 using namespace std;
 
 class BuscadorBinario {
 private:
-    double* arreglo;     // Arreglo dinámico para almacenar números
-    int capacidad;       // Tamaño máximo del arreglo
-    int cantidad;        // Cantidad actual de elementos
+    double* arreglo;      // Arreglo dinámico para almacenar los números
+    int capacidad;        // Tamaño máximo del arreglo
+    int cantidad;         // Cantidad actual de elementos
 
-    // Intercambia dos valores en el arreglo
+    // Función recursiva para ordenar usando QuickSort
+    void ordenarRecursivo(int inicio, int fin) {
+        if (inicio < fin) {
+            int posicionPivote = particionar(inicio, fin);
+            ordenarRecursivo(inicio, posicionPivote - 1);
+            ordenarRecursivo(posicionPivote + 1, fin);
+        }
+    }
+
+    // Función auxiliar para particionar el arreglo
+    int particionar(int inicio, int fin) {
+        double pivote = arreglo[fin];
+        int i = inicio - 1;
+        
+        for (int j = inicio; j < fin; j++) {
+            if (arreglo[j] <= pivote) {
+                i++;
+                intercambiar(arreglo[i], arreglo[j]);
+            }
+        }
+        intercambiar(arreglo[i + 1], arreglo[fin]);
+        return i + 1;
+    }
+
+    // Función recursiva para búsqueda binaria
+    int buscarRecursivo(double valor, int izquierda, int derecha) {
+        if (izquierda > derecha) return -1;  // Caso base: no encontrado
+        
+        int medio = izquierda + (derecha - izquierda) / 2;
+        
+        // Comparación con tolerancia para valores decimales
+        if (fabs(arreglo[medio] - valor) < 0.001) return medio;
+        
+        if (arreglo[medio] < valor) 
+            return buscarRecursivo(valor, medio + 1, derecha);
+        else 
+            return buscarRecursivo(valor, izquierda, medio - 1);
+    }
+
+    // Función para intercambiar valores
     void intercambiar(double &a, double &b) {
         double temp = a;
         a = b;
@@ -21,12 +58,12 @@ private:
     }
 
 public:
-    // Constructor que inicializa el arreglo
+    // Constructor: reserva memoria para el arreglo
     BuscadorBinario(int cap) : capacidad(cap), cantidad(0) {
         arreglo = new double[capacidad];
     }
 
-    // Destructor que libera la memoria
+    // Destructor: libera la memoria del arreglo
     ~BuscadorBinario() {
         delete[] arreglo;
     }
@@ -38,73 +75,60 @@ public:
         srand(time(0));
         cantidad = cant;
         for (int i = 0; i < cantidad; i++) {
+            // Genera números entre 0.00 y 2000.00 con 2 decimales
             arreglo[i] = round((rand() / (double)RAND_MAX * 2000) * 100) / 100;
         }
     }
 
-    // Ordena el arreglo usando Bubble Sort
+    // Ordena el arreglo llamando al método recursivo
     void ordenar() {
-        for (int i = 0; i < cantidad-1; i++) {
-            for (int j = 0; j < cantidad-i-1; j++) {
-                if (arreglo[j] > arreglo[j+1]) {
-                    intercambiar(arreglo[j], arreglo[j+1]);
-                }
-            }
-        }
+        ordenarRecursivo(0, cantidad - 1);
     }
 
-    // Muestra los primeros 100 números
-    void imprimirMuestra() {
+    // Muestra una muestra de los números ordenados
+    void mostrarMuestra() {
         int mostrar = min(100, cantidad);
-        cout << "Primeros " << mostrar << " números (ordenados):\n";
+        cout << "\nMuestra de " << mostrar << " números ordenados:\n";
         for (int i = 0; i < mostrar; i++) {
-            cout << fixed << setprecision(2) << arreglo[i] << " ";
-            if ((i+1) % 10 == 0) cout << endl;
+            printf("%7.2f ", arreglo[i]);  // Formato de 7 espacios con 2 decimales
+            if ((i+1) % 10 == 0) cout << endl;  // 10 números por línea
         }
         cout << endl;
     }
 
-    // Implementación de búsqueda binaria
-    int busquedaBinaria(double valor) {
-        int izquierda = 0;
-        int derecha = cantidad - 1;
-        
-        while (izquierda <= derecha) {
-            int medio = izquierda + (derecha - izquierda) / 2;
-            
-            if (arreglo[medio] == valor) return medio;
-            if (arreglo[medio] < valor) izquierda = medio + 1;
-            else derecha = medio - 1;
-        }
-        return -1;
+    // Inicia la búsqueda binaria
+    int buscar(double valor) {
+        return buscarRecursivo(valor, 0, cantidad - 1);
     }
 
     // Valida la entrada del usuario
-    static double obtenerNumeroValidado() {
-        string entrada;
-        double x;
+    static double leerNumero() {
+        const int TAM_BUFFER = 100;
+        char buffer[TAM_BUFFER];
+        double valor;
         
         while (true) {
-            cout << "Ingrese el numero a buscar (0.00-2000.00): ";
-            getline(cin, entrada);
+            cout << "\nIngrese número a buscar (0-2000 con 2 decimales) o 0 para salir: ";
+            cin.getline(buffer, TAM_BUFFER);
             
-            stringstream ss(entrada);
-            if (!(ss >> x) || !ss.eof()) {
-                cout << "Error: Debe ingresar un valor numerico valido (ej. 123.45).\n";
+            // Verifica si la entrada es un número válido
+            char* fin;
+            valor = strtod(buffer, &fin);
+            
+            // Validaciones
+            if (*fin != '\0' || fin == buffer) {
+                cout << "Error: Debe ingresar un número válido.\n";
                 continue;
             }
             
-            if (x < 0.00) {
-                cout << "Error: El valor no puede ser negativo.\n";
-            } 
-            else if (x > 2000.00) {
-                cout << "Error: El valor no puede ser mayor a 2000.00.\n";
-            }
-            else if (fabs(x - round(x * 100) / 100.0) > 0.0001) {
-                cout << "Error: El numero debe tener exactamente 2 decimales.\n";
-            }
-            else {
-                return x;
+            if (valor == 0.0) return 0.0;  // Salir si ingresa 0
+            
+            if (valor < 0.0 || valor > 2000.0) {
+                cout << "Error: El número debe estar entre 0.00 y 2000.00\n";
+            } else if (fabs(valor * 100 - round(valor * 100)) > 0.001) {
+                cout << "Error: Debe tener exactamente 2 decimales\n";
+            } else {
+                return valor;
             }
         }
     }
@@ -114,20 +138,28 @@ int main() {
     const int TOTAL = 999;
     BuscadorBinario buscador(TOTAL);
     
-    // Generar y ordenar números
+    // Paso 1: Generar y ordenar números
+    cout << "Generando " << TOTAL << " números aleatorios...\n";
     buscador.generarNumeros(TOTAL);
     buscador.ordenar();
-    buscador.imprimirMuestra();
+    buscador.mostrarMuestra();
     
-    // Buscar número
-    double num = BuscadorBinario::obtenerNumeroValidado();
-    int pos = buscador.busquedaBinaria(num);
-    
-    // Mostrar resultados
-    if (pos != -1) {
-        cout << "Número encontrado en posición: " << pos << endl;
-    } else {
-        cout << "Número no encontrado\n";
+    // Paso 2: Búsqueda interactiva
+    while (true) {
+        double num = BuscadorBinario::leerNumero();
+        
+        if (num == 0.0) {
+            cout << "Saliendo del programa...\n";
+            break;
+        }
+        
+        int pos = buscador.buscar(num);
+        
+        if (pos != -1) {
+            cout << "¡Número encontrado! Posición: " << pos << endl;
+        } else {
+            cout << "Número no encontrado. Intente con otro valor.\n";
+        }
     }
     
     return 0;

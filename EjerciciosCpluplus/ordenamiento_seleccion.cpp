@@ -1,140 +1,111 @@
-#include <iostream>   // Para operaciones de entrada/salida
-#include <cstdlib>    // Para funciones rand() y srand()
-#include <ctime>      // Para función time()
-#include <limits>     // Para numeric_limits
-#include <sstream>    // Para stringstream
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
 class OrdenadorSeleccion {
 private:
-    int* lista;       // Puntero al arreglo de números
-    int cantidad;     // Cantidad de elementos en el arreglo
+    int* lista;
+    int cantidad;
+
+    // Función recursiva para encontrar el índice del mínimo
+    int encontrarMinimo(int indiceActual, int indiceMinimo) {
+        if (indiceActual >= cantidad) {
+            return indiceMinimo;
+        }
+        
+        if (lista[indiceActual] < lista[indiceMinimo]) {
+            return encontrarMinimo(indiceActual + 1, indiceActual);
+        } else {
+            return encontrarMinimo(indiceActual + 1, indiceMinimo);
+        }
+    }
+
+    // Función recursiva para el ordenamiento por selección
+    void ordenarRecursivo(int indiceInicio) {
+        if (indiceInicio >= cantidad - 1) {
+            return;
+        }
+
+        int indiceMinimo = encontrarMinimo(indiceInicio + 1, indiceInicio);
+
+        if (indiceMinimo != indiceInicio) {
+            int temp = lista[indiceMinimo];
+            lista[indiceMinimo] = lista[indiceInicio];
+            lista[indiceInicio] = temp;
+        }
+
+        ordenarRecursivo(indiceInicio + 1);
+    }
 
 public:
-    // Constructor que recibe la cantidad de elementos
-    OrdenadorSeleccion(int cant);
-    
-    // Destructor para liberar memoria
-    ~OrdenadorSeleccion();
-    
-    // Llena el arreglo con números aleatorios
-    void generarNumerosAleatorios();
-    
-    // Ordena el arreglo usando el método de selección
-    void ordenarPorSeleccion();
-    
-    // Muestra el contenido del arreglo
-    void imprimirLista() const;
-    
-    // Método estático para validar entrada de usuario
-    static int obtenerEnteroValidado(const string& mensaje);
-};
-
-// Implementación del constructor
-OrdenadorSeleccion::OrdenadorSeleccion(int cant) : cantidad(cant) {
-    lista = new int[cantidad];  // Asignar memoria para el arreglo
-}
-
-// Implementación del destructor
-OrdenadorSeleccion::~OrdenadorSeleccion() {
-    delete[] lista;  // Liberar memoria del arreglo
-}
-
-// Implementación para generar números aleatorios
-void OrdenadorSeleccion::generarNumerosAleatorios() {
-    srand(time(0));  // Inicializar semilla aleatoria
-    
-    // Llenar el arreglo con valores aleatorios entre 0 y 999
-    for (int i = 0; i < cantidad; ++i) {
-        lista[i] = rand() % 1000;
+    OrdenadorSeleccion(int cant) : cantidad(cant) {
+        lista = new int[cantidad];
     }
-}
-
-// Implementación del algoritmo de ordenación por selección
-void OrdenadorSeleccion::ordenarPorSeleccion() {
-    // Recorrer todo el arreglo
-    for (int i = 0; i < cantidad - 1; i++) {
-        int min_idx = i;  // Suponer que el primer elemento es el mínimo
-        
-        // Buscar el mínimo en el subarreglo no ordenado
-        for (int j = i + 1; j < cantidad; j++) {
-            if (lista[j] < lista[min_idx]) {
-                min_idx = j;  // Actualizar índice del mínimo encontrado
+    
+    ~OrdenadorSeleccion() {
+        delete[] lista;
+    }
+    
+    void generarNumerosAleatorios() {
+        srand(time(0));
+        for (int i = 0; i < cantidad; ++i) {
+            lista[i] = rand() % 1000;
+        }
+    }
+    
+    // Interfaz para iniciar el ordenamiento recursivo
+    void ordenarPorSeleccion() {
+        ordenarRecursivo(0);
+    }
+    
+    void imprimirLista() const {
+        cout << "[";
+        for (int i = 0; i < cantidad; ++i) {
+            cout << lista[i];
+            if (i < cantidad - 1) {
+                cout << ", ";
             }
         }
-        
-        // Intercambiar el mínimo encontrado con el primer elemento no ordenado
-        int temp = lista[min_idx];
-        lista[min_idx] = lista[i];
-        lista[i] = temp;
+        cout << "]" << endl;
     }
-}
-
-// Implementación para mostrar el arreglo
-void OrdenadorSeleccion::imprimirLista() const {
-    cout << "[";
-    for (int i = 0; i < cantidad; ++i) {
-        cout << lista[i];
-        if (i < cantidad - 1) {
-            cout << ", ";  // Separador entre elementos
-        }
-    }
-    cout << "]" << endl;  // Cierre del arreglo
-}
-
-// Implementación del método estático para validar entrada
-int OrdenadorSeleccion::obtenerEnteroValidado(const string& mensaje) {
-    string entrada;
-    int valor;
     
-    while (true) {
-        cout << mensaje;
-        getline(cin, entrada);  // Leer toda la línea
-        
-        stringstream ss(entrada);  // Convertir string a stream
-        
-        // Verificar si la conversión a entero es válida y no hay sobrantes
-        if (!(ss >> valor) || !ss.eof()) {
-            cout << "Error: Debe ingresar un numero entero valido.\n";
-            continue;
+    static int obtenerEnteroValidado() {
+        int valor;
+        while (true) {
+            cout << "Ingrese la cantidad de numeros a ordenar: ";
+            if (cin >> valor) {
+                cin.ignore(10000, '\n');
+                return valor;
+            } else {
+                cout << "Error: Debe ingresar un numero entero valido.\n";
+                cin.clear();
+                cin.ignore(10000, '\n');
+            }
         }
-        
-        return valor;
     }
-}
+};
 
 int main() {
-    // Solicitar cantidad de números al usuario con validación
-    int cantidad = OrdenadorSeleccion::obtenerEnteroValidado(
-        "Ingrese la cantidad de numeros a ordenar: ");
+    int cantidad;
+    do {
+        cantidad = OrdenadorSeleccion::obtenerEnteroValidado();
+        if (cantidad <= 0) {
+            cout << "Error: La cantidad debe ser mayor que 0.\n";
+        }
+    } while (cantidad <= 0);
     
-    // Validar que la cantidad sea positiva
-    while (cantidad <= 0) {
-        cout << "Error: La cantidad debe ser mayor que 0.\n";
-        cantidad = OrdenadorSeleccion::obtenerEnteroValidado(
-            "Ingrese la cantidad de numeros a ordenar: ");
-    }
+    OrdenadorSeleccion ordenador(cantidad);
+    ordenador.generarNumerosAleatorios();
     
-    // Crear instancia del ordenador con el tamaño especificado
-    OrdenadorSeleccion* ordenador = new OrdenadorSeleccion(cantidad);
-    
-    // Generar números aleatorios en el arreglo
-    ordenador->generarNumerosAleatorios();
-    
-    // Mostrar lista original
     cout << "\nLista original: ";
-    ordenador->imprimirLista();
+    ordenador.imprimirLista();
     
-    // Ordenar la lista
-    ordenador->ordenarPorSeleccion();
+    ordenador.ordenarPorSeleccion();
     
-    // Mostrar lista ordenada
     cout << "Lista ordenada: ";
-    ordenador->imprimirLista();
-    
-    // Liberar memoria del ordenador
-    delete ordenador;
+    ordenador.imprimirLista();
     
     return 0;
 }
